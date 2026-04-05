@@ -7,10 +7,20 @@ node_modules/
 
 # misc
 .DS_Store
+*.pem
 
-# husky
-.husky/_/
+# env files
+.env
+.env.backup
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# editor
+.vscode/
+.cursor/
+.idea/
+
+# husky
+.husky/_/
