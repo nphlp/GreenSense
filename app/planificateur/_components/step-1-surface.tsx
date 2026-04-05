@@ -4,6 +4,7 @@ import { Indicator, Root } from "@atoms/checkbox";
 import cn from "@lib/cn";
 import type { GreenSenseState } from "@lib/poc-state";
 import { Check } from "lucide-react";
+import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 import NavButtons from "./nav-buttons";
@@ -63,8 +64,10 @@ export default function Step1Surface(props: Step1SurfaceProps) {
                     {PRESETS.map((value) => {
                         const selected = state.surface === value;
                         return (
-                            <label
+                            <motion.label
                                 key={value}
+                                whileTap={{ scale: 0.96 }}
+                                transition={{ duration: 0.08 }}
                                 className={cn(
                                     "flex cursor-pointer items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
                                     "has-focus-visible:outline-outline outline-2 outline-transparent",
@@ -88,7 +91,7 @@ export default function Step1Surface(props: Step1SurfaceProps) {
                                     </Indicator>
                                 </Root>
                                 <span>{value} m²</span>
-                            </label>
+                            </motion.label>
                         );
                     })}
                 </div>

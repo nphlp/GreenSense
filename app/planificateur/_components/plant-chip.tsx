@@ -4,6 +4,7 @@ import { Indicator, Root } from "@atoms/checkbox";
 import { Icon } from "@iconify/react";
 import cn from "@lib/cn";
 import { Check } from "lucide-react";
+import { motion } from "motion/react";
 
 type PlantChipProps = {
     name: string;
@@ -22,7 +23,9 @@ export default function PlantChip(props: PlantChipProps) {
     const { name, icon, caption, checked, onCheckedChange } = props;
 
     return (
-        <label
+        <motion.label
+            whileTap={{ scale: 0.96 }}
+            transition={{ duration: 0.08 }}
             className={cn(
                 // Layout
                 "flex cursor-pointer items-center gap-3 rounded-full py-1.5 pr-5 pl-4",
@@ -55,6 +58,6 @@ export default function PlantChip(props: PlantChipProps) {
                 <span className="text-foreground text-sm font-medium">{name}</span>
                 {caption && <span className="text-[10px] text-gray-500">{caption}</span>}
             </span>
-        </label>
+        </motion.label>
     );
 }
