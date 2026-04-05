@@ -45,7 +45,6 @@ bun run checks       # All checks (type + lint:fix + format:fix)
 bun run type         # TypeScript checking
 bun run lint:fix     # ESLint check/fix
 bun run format:fix   # Prettier check/fix
-bun run build:analyze # Build with bundle analyzer
 ```
 
 ## MCP Servers (`.mcp.json`)
@@ -62,6 +61,23 @@ bun run build:analyze # Build with bundle analyzer
 - `CLAUDE.md` — this file, Claude Code conventions and rules
 - `docs/` — mockups (Excalidraw planificateur/mon-jardin/dashboard + Figma terrain selection flow)
 - `NextjsDeploy/` — git submodule, full Next.js 16 template (reference stack)
+
+## Good Practices Reference
+
+Good practices docs live inside the submodule at `NextjsDeploy/docs/good-practices/`. Consult them directly — do not duplicate them here. Available guides:
+
+- `1-nextjs.md` — Page architecture, file structure per page
+- `2-components.md` — Component structure, props, JSX conventions
+- `3-typescript.md` — TypeScript conventions
+- `4-context.md` — Context structure (3-file pattern)
+- `5-form.md` — Form adapters, useForm hook, validation patterns
+- `6-query-state.md` — Query parameters with nuqs
+- `7-cookie-state.md` — Cookie state with useCookieState
+- `8-cross-state.md` — Reactive cross-component state
+- `10-base-ui.md` — Base UI component system (patterns, typing, inventory)
+- `12-password-managers.md` — Autocomplete attributes
+
+Skipped (not relevant for GreenSense POC): `9-orpc.md` (no API), `11-theme.md` (no theme system).
 
 ## Rules
 

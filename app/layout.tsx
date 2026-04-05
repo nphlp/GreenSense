@@ -1,8 +1,12 @@
-import { DEBUG_LAYOUT, HEADER_HEIGHT } from "@core/config";
+import ToastProvider from "@atoms/toast";
+import Breakpoints from "@comps/breakpoints";
+import Header from "@core/Header";
+import { DEBUG_LAYOUT } from "@core/config";
 import cn from "@lib/cn";
 import "@public/globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ReactNode } from "react";
 
 const geistSans = Geist({
@@ -42,14 +46,13 @@ export default async function Layout(props: LayoutProps) {
                     DEBUG_LAYOUT && "bg-red-100",
                 )}
             >
-                {/* TODO: make header clickable to reset POC progression */}
-                <header
-                    style={{ height: `${HEADER_HEIGHT}rem` }}
-                    className="flex items-center justify-center border-b border-gray-200"
-                >
-                    <h1 className="text-2xl font-bold">GreenSense</h1>
-                </header>
-                {children}
+                <ToastProvider>
+                    <NuqsAdapter>
+                        <Header />
+                        {children}
+                        <Breakpoints mode="onResize" />
+                    </NuqsAdapter>
+                </ToastProvider>
             </body>
         </html>
     );

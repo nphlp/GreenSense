@@ -15,12 +15,6 @@
         "type": "tsc --noEmit",
         "checks": "bun run type && bun run lint:fix && bun run format:fix"
     },
-    "lint-staged": {
-        "*.{js,ts,tsx}": [
-            "eslint --fix"
-        ],
-        "*.{js,ts,tsx,json,css,md,yml,yaml}": "prettier --write"
-    },
     "dependencies": {
         "next": "16.2.1-canary.5",
         "react": "^19.2.4",
@@ -52,6 +46,7 @@
         "lodash": "^4.17.23",
         "lucide-react": "^0.563.0",
         "motion": "^12.38.0",
+        "nuqs": "^2.8.9",
         "postcss": "^8.5.8",
         "prettier": "^3.8.1",
         "prettier-plugin-tailwindcss": "^0.7.2",
@@ -60,5 +55,11 @@
         "tailwindcss": "^4.2.2",
         "typescript": "^5.9.3",
         "zod": "^4.3.6"
+    },
+    "lint-staged": {
+        "*.{js,ts,tsx}": [
+            "eslint --fix"
+        ],
+        "*.{js,ts,tsx,json,css,md,yml,yaml}": "prettier --write"
     }
 }
