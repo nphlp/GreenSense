@@ -1,8 +1,7 @@
 "use client";
 
-import Card from "@atoms/card";
 import { Icon } from "@iconify/react";
-import { getCompanionsFor, getHarvestSeasonLabel, getPlant } from "@lib/plants/helpers";
+import { getCompanionReason, getCompanionsFor, getPlant } from "@lib/plants/helpers";
 import type { GreenSenseState } from "@lib/poc-state";
 import type { Dispatch, SetStateAction } from "react";
 import NavButtons from "./nav-buttons";
@@ -41,14 +40,14 @@ export default function Step2Companions(props: Step2CompanionsProps) {
                 </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-8">
                 {state.selectedPlants.map((plantId) => {
                     const plant = getPlant(plantId);
                     const companions = getCompanionsFor(plantId);
                     if (!plant) return null;
 
                     return (
-                        <Card key={plantId}>
+                        <section key={plantId} className="space-y-3">
                             <div className="flex items-center gap-3">
                                 <Icon icon={plant.icon} className="size-8" />
                                 <div>
@@ -63,7 +62,7 @@ export default function Step2Companions(props: Step2CompanionsProps) {
                                             key={companion.id}
                                             name={companion.name}
                                             icon={companion.icon}
-                                            caption={getHarvestSeasonLabel(companion)}
+                                            caption={getCompanionReason(plantId, companion.id)}
                                             checked={(state.companionChoices[plantId] ?? []).includes(companion.id)}
                                             onCheckedChange={() => toggleCompanion(plantId, companion.id)}
                                         />
@@ -72,7 +71,7 @@ export default function Step2Companions(props: Step2CompanionsProps) {
                             ) : (
                                 <p className="text-sm text-gray-500">Pas d’association suggérée.</p>
                             )}
-                        </Card>
+                        </section>
                     );
                 })}
             </div>

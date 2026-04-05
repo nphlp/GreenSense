@@ -1,3 +1,4 @@
+import { COMPANION_REASONS } from "./companions-reasons";
 import { PLANTS } from "./data";
 import type { Phase, Plant } from "./types";
 
@@ -58,6 +59,14 @@ function getPhaseSeasons(phase: Phase): string[] {
     const seasons = new Set<string>();
     months.forEach((m) => seasons.add(seasonOf(m)));
     return order.filter((s) => seasons.has(s));
+}
+
+/**
+ * Look up the companion-planting rationale for a pair of plants.
+ * Returns an empty string if no reason is documented.
+ */
+export function getCompanionReason(plantA: string, plantB: string): string {
+    return COMPANION_REASONS[`${plantA}|${plantB}`] ?? COMPANION_REASONS[`${plantB}|${plantA}`] ?? "";
 }
 
 /**
