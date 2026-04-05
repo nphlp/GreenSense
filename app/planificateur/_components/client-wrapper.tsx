@@ -1,6 +1,8 @@
 "use client";
 
 import { useCookieState } from "@lib/cookie-state-client";
+import "@lib/plants/icons-data";
+// registers Noto icons for <Icon /> components
 import { type GreenSenseState, POC_COOKIE_NAME, defaultState } from "@lib/poc-state";
 import ProgressStepper from "./progress-stepper";
 import Step1Plants from "./step-1-plants";
