@@ -16,6 +16,8 @@
         "checks": "bun run type && bun run lint:fix && bun run format:fix"
     },
     "dependencies": {
+        "@iconify-json/noto": "^1.2.7",
+        "@iconify/react": "^6.0.2",
         "next": "16.2.1-canary.5",
         "react": "^19.2.4",
         "react-dom": "^19.2.4"
