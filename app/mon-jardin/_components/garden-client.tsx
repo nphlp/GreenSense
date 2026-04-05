@@ -1,5 +1,6 @@
 "use client";
 
+import NavButtons from "@app/planificateur/_components/nav-buttons";
 import Button from "@atoms/button";
 import { Icon } from "@iconify/react";
 import { resetCookieState } from "@lib/cookie-state-client";
@@ -110,12 +111,12 @@ export default function GardenClient(props: GardenClientProps) {
                 })}
             </div>
 
-            <div className="flex flex-wrap gap-2">
-                <Link href="/planificateur">
-                    <Button label="Modifier ma sélection" colors="outline" />
-                </Link>
-                <Button label="Recommencer" colors="outline" onClick={handleRestart} />
-            </div>
+            <NavButtons
+                onBack={() => router.push("/planificateur")}
+                backLabel="Modifier ma sélection"
+                onNext={handleRestart}
+                nextLabel="Recommencer"
+            />
         </div>
     );
 }

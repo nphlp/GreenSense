@@ -6,6 +6,7 @@ import { resetCookieState } from "@lib/cookie-state-client";
 import { POC_COOKIE_NAME, defaultState } from "@lib/poc-state";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useSyncExternalStore } from "react";
 
 const scrollStore = (() => {
@@ -19,11 +20,15 @@ const scrollStore = (() => {
 })();
 
 export default function Header() {
+    const pathname = usePathname();
     const scrolled = useSyncExternalStore(
         scrollStore.subscribe,
         scrollStore.getSnapshot,
         scrollStore.getServerSnapshot,
     );
+
+    // Hide header on landing page (logo is shown in hero)
+    if (pathname === "/") return null;
 
     const handleReset = () => {
         resetCookieState(POC_COOKIE_NAME, defaultState);

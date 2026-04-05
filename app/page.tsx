@@ -1,6 +1,7 @@
 import Button from "@atoms/button";
 import Main from "@core/Main";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -14,7 +15,10 @@ export default function Page() {
     return (
         <Main vertical="center" horizontal="center">
             <div className="flex flex-col items-center gap-6 text-center">
-                <h1 className="text-5xl font-bold tracking-tight md:text-6xl">GreenSense</h1>
+                <div className="flex items-center gap-3">
+                    <Image src="/logo.webp" alt="" width={64} height={64} className="size-14 md:size-16" />
+                    <h1 className="text-5xl font-bold tracking-tight md:text-6xl">GreenSense</h1>
+                </div>
                 <p className="max-w-md text-lg text-gray-600">Planifie ton potager en permaculture.</p>
                 <div className="flex flex-wrap justify-center gap-3 text-4xl md:text-5xl">
                     {DECO_EMOJIS.map((emoji) => (

@@ -1,7 +1,10 @@
 "use client";
 
+import { Indicator, Root } from "@atoms/checkbox";
 import cn from "@lib/cn";
 import type { GreenSenseState } from "@lib/poc-state";
+import { Check } from "lucide-react";
+import { useRouter } from "next/navigation";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 import NavButtons from "./nav-buttons";
 
@@ -14,6 +17,7 @@ const PRESETS = [20, 50, 70, 100, 200] as const;
 
 export default function Step1Surface(props: Step1SurfaceProps) {
     const { state, setState } = props;
+    const router = useRouter();
 
     const selectSurface = (value: number) => {
         setState((s) => ({ ...s, surface: value }));
@@ -24,6 +28,7 @@ export default function Step1Surface(props: Step1SurfaceProps) {
         setState((s) => ({ ...s, surface: Number.isNaN(value) || value <= 0 ? null : value }));
     };
 
+    const handleBack = () => router.push("/");
     const handleNext = () => setState((s) => ({ ...s, step: 2 }));
 
     const isPreset = state.surface !== null && (PRESETS as readonly number[]).includes(state.surface);
@@ -42,27 +47,39 @@ export default function Step1Surface(props: Step1SurfaceProps) {
                 {PRESETS.map((value) => {
                     const selected = state.surface === value;
                     return (
-                        <button
+                        <label
                             key={value}
-                            type="button"
-                            onClick={() => selectSurface(value)}
                             className={cn(
-                                "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
-                                "focus-visible:outline-outline outline-2 outline-transparent",
+                                "flex cursor-pointer items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
+                                "has-focus-visible:outline-outline outline-2 outline-transparent",
                                 selected
                                     ? "border-gray-400 bg-gray-50/70"
-                                    : "cursor-pointer border-gray-200 hover:border-gray-300 active:border-gray-400",
+                                    : "border-gray-200 hover:border-gray-300 active:border-gray-400",
                             )}
                         >
-                            {value} m²
-                        </button>
+                            <Root
+                                checked={selected}
+                                onCheckedChange={() => selectSurface(value)}
+                                className={cn(
+                                    "size-4 rounded-sm",
+                                    "data-unchecked:border data-unchecked:border-gray-300",
+                                    "data-checked:bg-gray-900",
+                                    "outline-none",
+                                )}
+                            >
+                                <Indicator className="text-gray-50">
+                                    <Check className="size-2.5" />
+                                </Indicator>
+                            </Root>
+                            <span>{value} m²</span>
+                        </label>
                     );
                 })}
             </div>
 
-            <div className="space-y-1.5">
+            <div className="flex flex-wrap items-center gap-3">
                 <label className="text-sm text-gray-600" htmlFor="surface-manual">
-                    Ou entrez une valeur personnalisée
+                    Ou entrez une valeur personnalisée :
                 </label>
                 <div className="flex items-center gap-2">
                     <input
@@ -74,7 +91,7 @@ export default function Step1Surface(props: Step1SurfaceProps) {
                         value={manualValue}
                         onChange={handleManualChange}
                         className={cn(
-                            "w-32 rounded-md border border-gray-200 px-3 py-1.5 text-sm",
+                            "w-24 rounded-md border border-gray-200 px-3 py-1.5 text-sm",
                             "focus-visible:outline-outline outline-2 outline-transparent",
                             !isPreset && state.surface !== null && "border-gray-400 bg-gray-50/70",
                         )}
@@ -83,7 +100,7 @@ export default function Step1Surface(props: Step1SurfaceProps) {
                 </div>
             </div>
 
-            <NavButtons onNext={handleNext} nextDisabled={state.surface === null} />
+            <NavButtons onBack={handleBack} onNext={handleNext} nextDisabled={state.surface === null} />
         </div>
     );
 }
