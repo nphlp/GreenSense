@@ -9,6 +9,7 @@ import Step1Surface from "./step-1-surface";
 import Step2Plants from "./step-2-plants";
 import Step3Companions from "./step-3-companions";
 import Step4Calendar from "./step-4-calendar";
+import Step5Counts from "./step-5-counts";
 
 type ClientWrapperProps = {
     initialState: GreenSenseState | undefined;
@@ -26,7 +27,7 @@ export default function ClientWrapper(props: ClientWrapperProps) {
             {state.step === 2 && <Step2Plants state={state} setState={setState} />}
             {state.step === 3 && <Step3Companions state={state} setState={setState} />}
             {state.step === 4 && <Step4Calendar state={state} setState={setState} />}
-            {state.step === 5 && <div className="text-sm text-gray-500">Étape 5 — Quantités (à construire)</div>}
+            {state.step === 5 && <Step5Counts state={state} setState={setState} />}
         </div>
     );
 }
