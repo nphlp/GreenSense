@@ -7,12 +7,12 @@ import type { Dispatch, SetStateAction } from "react";
 import NavButtons from "./nav-buttons";
 import PlantChip from "./plant-chip";
 
-type Step2CompanionsProps = {
+type Step3CompanionsProps = {
     state: GreenSenseState;
     setState: Dispatch<SetStateAction<GreenSenseState>>;
 };
 
-export default function Step2Companions(props: Step2CompanionsProps) {
+export default function Step3Companions(props: Step3CompanionsProps) {
     const { state, setState } = props;
 
     const toggleCompanion = (plantId: string, companionId: string) => {
@@ -28,8 +28,8 @@ export default function Step2Companions(props: Step2CompanionsProps) {
         });
     };
 
-    const handleBack = () => setState((s) => ({ ...s, step: 1 }));
-    const handleNext = () => setState((s) => ({ ...s, step: 3 }));
+    const handleBack = () => setState((s) => ({ ...s, step: 2 }));
+    const handleNext = () => setState((s) => ({ ...s, step: 4 }));
 
     return (
         <div className="space-y-6">

@@ -10,9 +10,11 @@ type ProgressStepperProps = {
 };
 
 const STEPS = [
-    { n: 1 as Step, label: "Sélection" },
-    { n: 2 as Step, label: "Associations" },
-    { n: 3 as Step, label: "Calendrier" },
+    { n: 1 as Step, label: "Surface" },
+    { n: 2 as Step, label: "Plantes" },
+    { n: 3 as Step, label: "Associations" },
+    { n: 4 as Step, label: "Calendrier" },
+    { n: 5 as Step, label: "Quantités" },
 ] as const;
 
 export default function ProgressStepper(props: ProgressStepperProps) {

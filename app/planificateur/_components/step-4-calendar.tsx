@@ -10,7 +10,7 @@ import { type Dispatch, type SetStateAction, useState } from "react";
 import NavButtons from "./nav-buttons";
 import { PhaseBar } from "./plant-timeline";
 
-type Step3CalendarProps = {
+type Step4CalendarProps = {
     state: GreenSenseState;
     setState: Dispatch<SetStateAction<GreenSenseState>>;
 };
@@ -24,16 +24,17 @@ const LEGEND = [
     { label: "Récolte", color: "bg-orange-500" },
 ] as const;
 
-export default function Step3Calendar(props: Step3CalendarProps) {
+export default function Step4Calendar(props: Step4CalendarProps) {
     const { state, setState } = props;
 
     const allCompanionIds = Object.values(state.companionChoices).flat();
     const allPlantIds = mergePlantIds(state.selectedPlants, allCompanionIds);
     const plants = getPlantsByIds(allPlantIds);
 
-    const [openPlantId, setOpenPlantId] = useState<string | null>(null);
+    const [openPlantId, setOpenPlantId] = useState<string | null>(plants[0]?.id ?? null);
 
-    const handleBack = () => setState((s) => ({ ...s, step: 2 }));
+    const handleBack = () => setState((s) => ({ ...s, step: 3 }));
+    const handleNext = () => setState((s) => ({ ...s, step: 5 }));
 
     return (
         <div className="space-y-6">
@@ -138,7 +139,7 @@ export default function Step3Calendar(props: Step3CalendarProps) {
                 ))}
             </div>
 
-            <NavButtons onBack={handleBack} />
+            <NavButtons onBack={handleBack} onNext={handleNext} />
         </div>
     );
 }
