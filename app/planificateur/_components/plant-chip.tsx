@@ -1,6 +1,6 @@
 "use client";
 
-import { Checkbox } from "@base-ui/react/checkbox";
+import { Indicator, Root } from "@atoms/checkbox/atoms";
 import { Icon } from "@iconify/react";
 import cn from "@lib/cn";
 import { Check } from "lucide-react";
@@ -33,19 +33,21 @@ export default function PlantChip(props: PlantChipProps) {
                 "has-focus-visible:outline-outline outline-2 outline-transparent",
             )}
         >
-            <Checkbox.Root
+            <Root
                 checked={checked}
                 onCheckedChange={onCheckedChange}
                 className={cn(
-                    "size-4 rounded-sm outline-none",
+                    // Reset default checkbox styles
+                    "size-4 rounded-sm",
                     "data-unchecked:border data-unchecked:border-gray-300",
                     "data-checked:bg-gray-900",
+                    "outline-none",
                 )}
             >
-                <Checkbox.Indicator className="text-gray-50">
+                <Indicator className="text-gray-50">
                     <Check className="size-2.5" />
-                </Checkbox.Indicator>
-            </Checkbox.Root>
+                </Indicator>
+            </Root>
             <Icon icon={icon} className="size-5" />
             <span className="text-foreground text-sm font-medium select-none">{name}</span>
         </label>
