@@ -59,25 +59,30 @@ export default function Step5Counts(props: Step5CountsProps) {
                     <p className="text-sm text-gray-600">Ajustez le nombre de plants selon la surface disponible.</p>
                 </div>
 
-                {/* Surface progress bar */}
-                <div className="bg-background sticky top-0 z-[5] space-y-1.5 rounded-md border border-gray-200 px-3 py-2">
-                    <div className="flex items-baseline justify-between text-xs">
-                        <span className="font-medium">
-                            {formatNumber(Math.round(usedSurface * 10) / 10)} m² / {totalSurface} m²
-                        </span>
-                        <span
-                            className={cn(
-                                "font-medium",
-                                percent <= 80 && "text-green-600",
-                                percent > 80 && percent <= 100 && "text-orange-500",
-                                percent > 100 && "text-red-600",
-                            )}
-                        >
-                            {percent > 100 ? "Surface dépassée" : `${Math.round(percent)}% utilisé`}
-                        </span>
-                    </div>
-                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
-                        <div className={cn("h-full transition-all", barColor)} style={{ width: `${capped}%` }} />
+                {/* Surface progress bar (wrapped to hide list items behind rounded corners) */}
+                <div className="bg-background sticky top-0 z-[5] pb-2">
+                    <div className="bg-background space-y-1.5 rounded-md border border-gray-200 px-3 py-2.5">
+                        <div className="flex items-baseline justify-between gap-3 text-xs">
+                            <span className="flex items-baseline gap-2">
+                                <span className="text-gray-500">Surface</span>
+                                <span className="font-medium">
+                                    {formatNumber(Math.round(usedSurface * 10) / 10)} m² / {totalSurface} m²
+                                </span>
+                            </span>
+                            <span
+                                className={cn(
+                                    "font-medium",
+                                    percent <= 80 && "text-green-600",
+                                    percent > 80 && percent <= 100 && "text-orange-500",
+                                    percent > 100 && "text-red-600",
+                                )}
+                            >
+                                {percent > 100 ? "Surface dépassée" : `${Math.round(percent)}% utilisé`}
+                            </span>
+                        </div>
+                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+                            <div className={cn("h-full transition-all", barColor)} style={{ width: `${capped}%` }} />
+                        </div>
                     </div>
                 </div>
 
