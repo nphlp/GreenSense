@@ -8,6 +8,7 @@ import { Check } from "lucide-react";
 type PlantChipProps = {
     name: string;
     icon: string;
+    caption?: string;
     checked: boolean;
     onCheckedChange: (checked: boolean) => void;
 };
@@ -15,15 +16,16 @@ type PlantChipProps = {
 /**
  * Chip-style checkbox with an Iconify icon next to the plant name.
  * Mirrors the style of @atoms/checkbox/checkbox-chip but adds an icon slot.
+ * The optional caption renders under the name (used for season labels).
  */
 export default function PlantChip(props: PlantChipProps) {
-    const { name, icon, checked, onCheckedChange } = props;
+    const { name, icon, caption, checked, onCheckedChange } = props;
 
     return (
         <label
             className={cn(
                 // Layout
-                "flex cursor-pointer items-center gap-2 rounded-full px-3 py-2",
+                "flex cursor-pointer items-center gap-3 rounded-full py-1.5 pr-5 pl-4",
                 // Border + transitions
                 "border transition-colors",
                 checked
@@ -49,7 +51,10 @@ export default function PlantChip(props: PlantChipProps) {
                 </Indicator>
             </Root>
             <Icon icon={icon} className="size-5" />
-            <span className="text-foreground text-sm font-medium select-none">{name}</span>
+            <span className="flex flex-col leading-tight select-none">
+                <span className="text-foreground text-sm font-medium">{name}</span>
+                {caption && <span className="text-[10px] text-gray-500">{caption}</span>}
+            </span>
         </label>
     );
 }

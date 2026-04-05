@@ -2,7 +2,7 @@
 
 import Card from "@atoms/card";
 import { Icon } from "@iconify/react";
-import { getCompanionsFor, getPlant } from "@lib/plants/helpers";
+import { getCompanionsFor, getHarvestSeasonLabel, getPlant } from "@lib/plants/helpers";
 import type { GreenSenseState } from "@lib/poc-state";
 import type { Dispatch, SetStateAction } from "react";
 import NavButtons from "./nav-buttons";
@@ -63,6 +63,7 @@ export default function Step2Companions(props: Step2CompanionsProps) {
                                             key={companion.id}
                                             name={companion.name}
                                             icon={companion.icon}
+                                            caption={getHarvestSeasonLabel(companion)}
                                             checked={(state.companionChoices[plantId] ?? []).includes(companion.id)}
                                             onCheckedChange={() => toggleCompanion(plantId, companion.id)}
                                         />

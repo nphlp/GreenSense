@@ -1,6 +1,7 @@
 "use client";
 
 import { PLANTS } from "@lib/plants/data";
+import { getHarvestSeasonLabel } from "@lib/plants/helpers";
 import type { GreenSenseState } from "@lib/poc-state";
 import type { Dispatch, SetStateAction } from "react";
 import NavButtons from "./nav-buttons";
@@ -37,6 +38,7 @@ export default function Step1Plants(props: Step1PlantsProps) {
                         key={plant.id}
                         name={plant.name}
                         icon={plant.icon}
+                        caption={getHarvestSeasonLabel(plant)}
                         checked={state.selectedPlants.includes(plant.id)}
                         onCheckedChange={() => togglePlant(plant.id)}
                     />
