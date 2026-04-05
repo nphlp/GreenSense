@@ -7,6 +7,7 @@ import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 import NavButtons from "./nav-buttons";
+import ScrollFadeArea from "./scroll-fade-area";
 
 type Step1SurfaceProps = {
     state: GreenSenseState;
@@ -36,7 +37,7 @@ export default function Step1Surface(props: Step1SurfaceProps) {
 
     return (
         <div className="flex min-h-0 flex-1 flex-col gap-6">
-            <div className="flex-1 space-y-6 overflow-y-auto">
+            <ScrollFadeArea>
                 <div className="space-y-2">
                     <h2 className="text-2xl font-bold">Bienvenue dans le planificateur</h2>
                     <p className="text-sm text-gray-600">
@@ -114,7 +115,7 @@ export default function Step1Surface(props: Step1SurfaceProps) {
                         <span className="text-sm text-gray-600">m²</span>
                     </div>
                 </div>
-            </div>
+            </ScrollFadeArea>
 
             <NavButtons onBack={handleBack} onNext={handleNext} nextDisabled={state.surface === null} />
         </div>

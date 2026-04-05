@@ -9,6 +9,7 @@ import { ChevronRight } from "lucide-react";
 import { type Dispatch, type SetStateAction, useState } from "react";
 import NavButtons from "./nav-buttons";
 import { PhaseBar } from "./plant-timeline";
+import ScrollFadeArea from "./scroll-fade-area";
 
 type Step4CalendarProps = {
     state: GreenSenseState;
@@ -38,7 +39,7 @@ export default function Step4Calendar(props: Step4CalendarProps) {
 
     return (
         <div className="flex min-h-0 flex-1 flex-col gap-6">
-            <div className="flex-1 space-y-6 overflow-y-auto">
+            <ScrollFadeArea>
                 <div className="space-y-1">
                     <h2 className="text-2xl font-bold">Votre calendrier annuel</h2>
                     <p className="text-sm text-gray-600">
@@ -141,7 +142,7 @@ export default function Step4Calendar(props: Step4CalendarProps) {
                         </Root>
                     ))}
                 </div>
-            </div>
+            </ScrollFadeArea>
 
             <NavButtons onBack={handleBack} onNext={handleNext} />
         </div>

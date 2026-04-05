@@ -8,6 +8,7 @@ import { Minus, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { Dispatch, SetStateAction } from "react";
 import NavButtons from "./nav-buttons";
+import ScrollFadeArea from "./scroll-fade-area";
 
 type Step5CountsProps = {
     state: GreenSenseState;
@@ -53,35 +54,40 @@ export default function Step5Counts(props: Step5CountsProps) {
 
     return (
         <div className="flex min-h-0 flex-1 flex-col gap-6">
-            <div className="flex-1 space-y-6 overflow-y-auto">
+            <ScrollFadeArea>
                 <div className="space-y-1">
                     <h2 className="text-2xl font-bold">Combien de plants ?</h2>
                     <p className="text-sm text-gray-600">Ajustez le nombre de plants selon la surface disponible.</p>
                 </div>
 
-                {/* Surface progress bar (wrapped to hide list items behind rounded corners) */}
-                <div className="bg-background sticky top-0 z-[5] pb-2">
-                    <div className="bg-background space-y-1.5 rounded-md border border-gray-200 px-3 py-2.5">
-                        <div className="flex items-baseline justify-between gap-3 text-xs">
-                            <span className="flex items-baseline gap-2">
-                                <span className="text-gray-500">Surface</span>
-                                <span className="font-medium">
-                                    {formatNumber(Math.round(usedSurface * 10) / 10)} m² / {totalSurface} m²
+                {/* Surface progress bar (opaque wrapper hides rounded corners, shadow for elevation) */}
+                <div className="bg-background sticky -top-4 z-10 pt-4 pb-2">
+                    <div className="bg-background">
+                        <div className="bg-background space-y-1.5 rounded-xl border border-gray-200 px-3 py-2.5 shadow-md">
+                            <div className="flex items-baseline justify-between gap-3 text-xs">
+                                <span className="flex items-baseline gap-2">
+                                    <span className="text-gray-500">Surface</span>
+                                    <span className="font-medium">
+                                        {formatNumber(Math.round(usedSurface * 10) / 10)} m² / {totalSurface} m²
+                                    </span>
                                 </span>
-                            </span>
-                            <span
-                                className={cn(
-                                    "font-medium",
-                                    percent <= 80 && "text-green-600",
-                                    percent > 80 && percent <= 100 && "text-orange-500",
-                                    percent > 100 && "text-red-600",
-                                )}
-                            >
-                                {percent > 100 ? "Surface dépassée" : `${Math.round(percent)}% utilisé`}
-                            </span>
-                        </div>
-                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
-                            <div className={cn("h-full transition-all", barColor)} style={{ width: `${capped}%` }} />
+                                <span
+                                    className={cn(
+                                        "font-medium",
+                                        percent <= 80 && "text-green-600",
+                                        percent > 80 && percent <= 100 && "text-orange-500",
+                                        percent > 100 && "text-red-600",
+                                    )}
+                                >
+                                    {percent > 100 ? "Surface dépassée" : `${Math.round(percent)}% utilisé`}
+                                </span>
+                            </div>
+                            <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+                                <div
+                                    className={cn("h-full transition-all", barColor)}
+                                    style={{ width: `${capped}%` }}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -138,7 +144,7 @@ export default function Step5Counts(props: Step5CountsProps) {
                         );
                     })}
                 </div>
-            </div>
+            </ScrollFadeArea>
 
             <NavButtons onBack={handleBack} onNext={handleFinish} nextLabel="Finir" />
         </div>
