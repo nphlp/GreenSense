@@ -1,7 +1,6 @@
 import cn from "@lib/cn";
 import type { Phase, Plant } from "@lib/plants/types";
 
-const MONTH_LABELS = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
 const MONTH_NAMES = [
     "janvier",
     "février",
@@ -17,76 +16,63 @@ const MONTH_NAMES = [
     "décembre",
 ];
 
-/**
- * Returns the list of active months (1-12) for a phase.
- * Handles year-wrapping phases (e.g. ail planting from October to March).
- */
-function getActiveMonths(phase: Phase): number[] {
-    const months: number[] = [];
-    if (phase.start <= phase.end) {
-        for (let m = phase.start; m <= phase.end; m++) months.push(m);
-    } else {
-        for (let m = phase.start; m <= 12; m++) months.push(m);
-        for (let m = 1; m <= phase.end; m++) months.push(m);
-    }
-    return months;
-}
-
 function formatPhase(phase: Phase): string {
     if (phase.start === phase.end) return MONTH_NAMES[phase.start - 1];
     return `${MONTH_NAMES[phase.start - 1]}–${MONTH_NAMES[phase.end - 1]}`;
 }
 
-type PhaseBarProps = {
-    phase: Phase | undefined;
-    color: string;
-};
-
-function PhaseBar(props: PhaseBarProps) {
-    const { phase, color } = props;
-    const activeMonths = phase ? getActiveMonths(phase) : [];
+/**
+ * Continuous bar spanning months start..end on a 12-column grid.
+ * Handles year-wrapping phases (e.g. ail planting from October to March).
+ */
+export function PhaseBar(props: { phase: Phase; colorClass: string; height?: string }) {
+    const { phase, colorClass, height = "h-2" } = props;
+    const segments: Array<[number, number]> = [];
+    if (phase.start <= phase.end) {
+        segments.push([phase.start, phase.end]);
+    } else {
+        segments.push([phase.start, 12]);
+        segments.push([1, phase.end]);
+    }
 
     return (
-        <div className="grid grid-cols-12 gap-px">
+        <div className="relative grid grid-cols-12">
+            {/* Background grid */}
             {Array.from({ length: 12 }, (_, i) => (
-                <div key={i} className={cn("h-2 rounded-sm", activeMonths.includes(i + 1) ? color : "bg-gray-100")} />
+                <div key={i} className="border-l border-gray-100 first:border-l-0" />
+            ))}
+            {/* Colored segments */}
+            {segments.map(([start, end], i) => (
+                <div
+                    key={i}
+                    style={{ gridColumn: `${start} / ${end + 1}`, gridRow: 1 }}
+                    className={cn("my-auto rounded-full", colorClass, height)}
+                />
             ))}
         </div>
     );
 }
 
-type PlantTimelineProps = {
-    plant: Plant;
-};
-
-export default function PlantTimeline(props: PlantTimelineProps) {
+/**
+ * Detailed view: all 4 phases as separate continuous bars.
+ */
+export default function PlantTimeline(props: { plant: Plant }) {
     const { plant } = props;
     const { phases } = plant;
 
     return (
         <div className="space-y-2">
-            {/* Month labels */}
-            <div className="grid grid-cols-12 gap-px">
-                {MONTH_LABELS.map((m, i) => (
-                    <div key={i} className="text-center text-[10px] font-medium text-gray-400">
-                        {m}
-                    </div>
-                ))}
+            <div className="space-y-1.5">
+                {phases.sowing && <PhaseBar phase={phases.sowing} colorClass="bg-green-300" />}
+                {phases.planting && <PhaseBar phase={phases.planting} colorClass="bg-green-600" />}
+                {phases.flowering && <PhaseBar phase={phases.flowering} colorClass="bg-pink-400" />}
+                <PhaseBar phase={phases.harvest} colorClass="bg-orange-500" />
             </div>
-
-            {/* Stacked phase bars */}
-            <div className="space-y-1">
-                {phases.sowing && <PhaseBar phase={phases.sowing} color="bg-green-300" />}
-                {phases.planting && <PhaseBar phase={phases.planting} color="bg-green-600" />}
-                {phases.flowering && <PhaseBar phase={phases.flowering} color="bg-pink-400" />}
-                <PhaseBar phase={phases.harvest} color="bg-orange-500" />
-            </div>
-
-            {/* Legend text */}
             <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-gray-600">
                 {phases.sowing && (
                     <span>
-                        <span className="font-medium">Semis</span> {formatPhase(phases.sowing)}
+                        <span className="size-2 rounded-full bg-green-300" /> <span className="font-medium">Semis</span>{" "}
+                        {formatPhase(phases.sowing)}
                     </span>
                 )}
                 {phases.planting && (
