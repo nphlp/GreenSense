@@ -1,0 +1,3 @@
+[submodule "NextjsDeploy"]
+	path = NextjsDeploy
+	url = git@github.com:nphlp/NextjsDeploy.git
