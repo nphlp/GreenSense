@@ -4,9 +4,16 @@ import NavButtons from "@app/planificateur/_components/nav-buttons";
 import Button from "@atoms/button";
 import { Icon } from "@iconify/react";
 import { resetCookieState } from "@lib/cookie-state-client";
-import { getPlantsByIds, getTotalYield, getUsedSurface, mergePlantIds } from "@lib/plants/helpers";
+import {
+    getHarvestSeasonLabel,
+    getPlantsByIds,
+    getTotalYield,
+    getUsedSurface,
+    mergePlantIds,
+} from "@lib/plants/helpers";
 import "@lib/plants/icons-data";
 import { type GreenSenseState, POC_COOKIE_NAME, defaultState } from "@lib/poc-state";
+import { Ruler, Scale, Sprout } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -61,51 +68,58 @@ export default function GardenClient(props: GardenClientProps) {
             </div>
 
             {/* Summary stats */}
-            <div className="grid grid-cols-3 gap-3">
-                <div className="rounded-md border border-gray-200 px-3 py-2">
-                    <div className="text-[11px] text-gray-500">Surface</div>
-                    <div className="text-lg font-semibold">
+            <div className="flex flex-wrap gap-3">
+                <div className="min-w-36 flex-1 rounded-md border border-gray-200 px-4 py-3">
+                    <div className="flex items-center gap-1.5 text-sm text-gray-500">
+                        <Ruler className="size-4" />
+                        Surface
+                    </div>
+                    <div className="text-2xl font-semibold">
                         {formatNumber(Math.round(usedSurface * 10) / 10)}
-                        <span className="ml-1 text-xs font-normal text-gray-500">/ {initialState.surface ?? 0} m²</span>
+                        <span className="ml-1 text-sm font-normal text-gray-500">/ {initialState.surface ?? 0} m²</span>
                     </div>
                 </div>
-                <div className="rounded-md border border-gray-200 px-3 py-2">
-                    <div className="text-[11px] text-gray-500">Plants</div>
-                    <div className="text-lg font-semibold">{totalPlants}</div>
+                <div className="min-w-36 flex-1 rounded-md border border-gray-200 px-4 py-3">
+                    <div className="flex items-center gap-1.5 text-sm text-gray-500">
+                        <Sprout className="size-4" />
+                        Plants
+                    </div>
+                    <div className="text-2xl font-semibold">{totalPlants}</div>
                 </div>
-                <div className="rounded-md border border-gray-200 px-3 py-2">
-                    <div className="text-[11px] text-gray-500">Récolte estimée</div>
-                    <div className="text-lg font-semibold">
+                <div className="min-w-36 flex-1 rounded-md border border-gray-200 px-4 py-3">
+                    <div className="flex items-center gap-1.5 text-sm text-gray-500">
+                        <Scale className="size-4" />
+                        Récolte estimée
+                    </div>
+                    <div className="text-2xl font-semibold">
                         {formatNumber(Math.round(totalYield * 10) / 10)}
-                        <span className="ml-1 text-xs font-normal text-gray-500">kg/an</span>
+                        <span className="ml-1 text-sm font-normal text-gray-500">kg/an</span>
                     </div>
                 </div>
             </div>
 
-            {/* Plant list */}
-            <div className="space-y-2">
+            {/* Plant grid */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
                 {plants.map((plant) => {
                     const count = counts[plant.id];
                     const plantSurface = plant.spacePerPlant * count;
                     const plantYield = plant.yieldPerPlant * count;
                     return (
-                        <div
-                            key={plant.id}
-                            className="flex items-center gap-3 rounded-md border border-gray-200 px-3 py-2"
-                        >
-                            <Icon icon={plant.icon} className="size-8 shrink-0" />
-                            <div className="min-w-0 flex-1">
-                                <div className="text-sm font-medium">
+                        <div key={plant.id} className="flex flex-col gap-1.5 rounded-lg border border-gray-200 p-3">
+                            <div className="flex items-center gap-2">
+                                <Icon icon={plant.icon} className="size-7 shrink-0" />
+                                <span className="text-base font-semibold">
                                     {plant.name}
-                                    <span className="ml-2 text-xs font-normal text-gray-500">×{count}</span>
-                                </div>
-                                <div className="text-[11px] text-gray-500">
-                                    {formatNumber(Math.round(plantSurface * 100) / 100)} m² ·{" "}
-                                    <span className="font-medium text-gray-700">
-                                        {formatNumber(Math.round(plantYield * 10) / 10)} kg/an
-                                    </span>
-                                </div>
+                                    <span className="ml-1.5 text-sm font-normal text-gray-500">×{count}</span>
+                                </span>
                             </div>
+                            <div className="text-xs text-gray-600">
+                                {formatNumber(Math.round(plantSurface * 100) / 100)} m² ·{" "}
+                                <span className="font-medium text-gray-800">
+                                    {formatNumber(Math.round(plantYield * 10) / 10)} kg/an
+                                </span>
+                            </div>
+                            <div className="text-xs text-gray-500">{getHarvestSeasonLabel(plant)}</div>
                         </div>
                     );
                 })}
