@@ -1,0 +1,106 @@
+"use client";
+
+import cn from "@lib/cn";
+import { Loader } from "lucide-react";
+import { Route } from "next";
+import NextLink, { LinkProps as NextLinkProps } from "next/link";
+import { AnchorHTMLAttributes, ReactNode, RefObject } from "react";
+import {
+    ButtonColorsType,
+    ButtonPaddingType,
+    ButtonRoundedType,
+    buttonStyle,
+    loaderColor,
+} from "../_core/button-variants";
+
+type OnNavigateEvent = { preventDefault: () => void };
+
+export type LinkProps = {
+    href: Route;
+    label: string;
+    children?: ReactNode;
+
+    // Styles
+    colors?: ButtonColorsType;
+    rounded?: ButtonRoundedType;
+    padding?: ButtonPaddingType;
+    /** Disable flex styles */
+    noFlex?: boolean;
+    /** Disable outline styles */
+    noOutline?: boolean;
+    /** Disable all styles (except outline) */
+    noStyle?: boolean;
+    className?: string;
+    loaderColorClass?: string;
+
+    // States
+    loading?: boolean;
+    disabled?: boolean;
+
+    // Nextjs Link Props
+    onNavigate?: (e: OnNavigateEvent) => void;
+
+    // Legacy Props
+    legacyProps?: Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps>;
+
+    // Others
+    ref?: RefObject<HTMLAnchorElement>;
+} & Pick<NextLinkProps<Route>, "replace" | "scroll" | "prefetch">;
+
+export default function Link(props: LinkProps) {
+    const {
+        href,
+        label,
+        children,
+        // Styles
+        colors = "outline",
+        rounded = "md",
+        padding = "md",
+        noFlex = false,
+        noOutline = false,
+        noStyle = false,
+        className,
+        loaderColorClass,
+        // States
+        loading,
+        disabled,
+        // Others
+        onNavigate,
+        legacyProps,
+        ...othersProps
+    } = props;
+
+    const loaderDefaultColor = loaderColor(colors, noStyle, loaderColorClass);
+
+    const handleNavigate = (e: OnNavigateEvent) => {
+        if (disabled || loading) {
+            e.preventDefault();
+        }
+        onNavigate?.(e);
+    };
+
+    return (
+        <NextLink
+            href={href}
+            aria-label={label}
+            className={cn(
+                buttonStyle({ colors, rounded, padding, noFlex, noOutline, noStyle }),
+                "relative",
+                // Not first child invisible when loading
+                loading && "text-transparent! [&>*:not([data-loader])]:invisible",
+                className,
+            )}
+            data-disabled={disabled || loading}
+            onNavigate={handleNavigate}
+            {...legacyProps}
+            {...othersProps}
+        >
+            {loading && (
+                <div data-loader className={cn("absolute", loaderDefaultColor)}>
+                    <Loader className="size-5 animate-spin" />
+                </div>
+            )}
+            {children ?? label}
+        </NextLink>
+    );
+}
