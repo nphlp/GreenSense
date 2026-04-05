@@ -52,85 +52,87 @@ export default function Step5Counts(props: Step5CountsProps) {
     const handleFinish = () => router.push("/mon-jardin");
 
     return (
-        <div className="space-y-6">
-            <div className="space-y-1">
-                <h2 className="text-2xl font-bold">Combien de plants ?</h2>
-                <p className="text-sm text-gray-600">Ajustez le nombre de plants selon la surface disponible.</p>
-            </div>
-
-            {/* Surface progress bar */}
-            <div className="bg-background sticky top-16 z-[5] space-y-1.5 rounded-md border border-gray-200 px-3 py-2 md:top-18">
-                <div className="flex items-baseline justify-between text-xs">
-                    <span className="font-medium">
-                        {formatNumber(Math.round(usedSurface * 10) / 10)} m² / {totalSurface} m²
-                    </span>
-                    <span
-                        className={cn(
-                            "font-medium",
-                            percent <= 80 && "text-green-600",
-                            percent > 80 && percent <= 100 && "text-orange-500",
-                            percent > 100 && "text-red-600",
-                        )}
-                    >
-                        {percent > 100 ? "Surface dépassée" : `${Math.round(percent)}% utilisé`}
-                    </span>
+        <div className="flex min-h-0 flex-1 flex-col gap-6">
+            <div className="flex-1 space-y-6 overflow-y-auto">
+                <div className="space-y-1">
+                    <h2 className="text-2xl font-bold">Combien de plants ?</h2>
+                    <p className="text-sm text-gray-600">Ajustez le nombre de plants selon la surface disponible.</p>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
-                    <div className={cn("h-full transition-all", barColor)} style={{ width: `${capped}%` }} />
-                </div>
-            </div>
 
-            {/* Plant count controls */}
-            <div className="space-y-2">
-                {plants.map((plant) => {
-                    const count = getCount(plant.id);
-                    const plantSurface = plant.spacePerPlant * count;
-                    const plantYield = plant.yieldPerPlant * count;
-                    return (
-                        <div
-                            key={plant.id}
-                            className="flex items-center gap-3 rounded-md border border-gray-200 px-3 py-2"
+                {/* Surface progress bar */}
+                <div className="bg-background sticky top-0 z-[5] space-y-1.5 rounded-md border border-gray-200 px-3 py-2">
+                    <div className="flex items-baseline justify-between text-xs">
+                        <span className="font-medium">
+                            {formatNumber(Math.round(usedSurface * 10) / 10)} m² / {totalSurface} m²
+                        </span>
+                        <span
+                            className={cn(
+                                "font-medium",
+                                percent <= 80 && "text-green-600",
+                                percent > 80 && percent <= 100 && "text-orange-500",
+                                percent > 100 && "text-red-600",
+                            )}
                         >
-                            <Icon icon={plant.icon} className="size-8 shrink-0" />
-                            <div className="min-w-0 flex-1">
-                                <div className="text-sm font-medium">{plant.name}</div>
-                                <div className="text-[11px] text-gray-500">
-                                    {formatNumber(Math.round(plantSurface * 100) / 100)} m² ·{" "}
-                                    {formatNumber(Math.round(plantYield * 10) / 10)} kg/an
+                            {percent > 100 ? "Surface dépassée" : `${Math.round(percent)}% utilisé`}
+                        </span>
+                    </div>
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+                        <div className={cn("h-full transition-all", barColor)} style={{ width: `${capped}%` }} />
+                    </div>
+                </div>
+
+                {/* Plant count controls */}
+                <div className="space-y-2">
+                    {plants.map((plant) => {
+                        const count = getCount(plant.id);
+                        const plantSurface = plant.spacePerPlant * count;
+                        const plantYield = plant.yieldPerPlant * count;
+                        return (
+                            <div
+                                key={plant.id}
+                                className="flex items-center gap-3 rounded-md border border-gray-200 px-3 py-2"
+                            >
+                                <Icon icon={plant.icon} className="size-8 shrink-0" />
+                                <div className="min-w-0 flex-1">
+                                    <div className="text-sm font-medium">{plant.name}</div>
+                                    <div className="text-[11px] text-gray-500">
+                                        {formatNumber(Math.round(plantSurface * 100) / 100)} m² ·{" "}
+                                        {formatNumber(Math.round(plantYield * 10) / 10)} kg/an
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => updateCount(plant.id, -1)}
+                                        disabled={count === 0}
+                                        className={cn(
+                                            "flex size-8 items-center justify-center rounded-full border border-gray-200 transition-colors",
+                                            "focus-visible:outline-outline outline-2 outline-transparent",
+                                            count === 0
+                                                ? "cursor-not-allowed text-gray-300"
+                                                : "cursor-pointer text-gray-700 hover:bg-gray-50 active:bg-gray-100",
+                                        )}
+                                        aria-label={`Retirer un plant de ${plant.name}`}
+                                    >
+                                        <Minus className="size-4" />
+                                    </button>
+                                    <span className="w-6 text-center text-sm font-semibold tabular-nums">{count}</span>
+                                    <button
+                                        type="button"
+                                        onClick={() => updateCount(plant.id, 1)}
+                                        className={cn(
+                                            "flex size-8 cursor-pointer items-center justify-center rounded-full border border-gray-200 text-gray-700 transition-colors hover:bg-gray-50 active:bg-gray-100",
+                                            "focus-visible:outline-outline outline-2 outline-transparent",
+                                        )}
+                                        aria-label={`Ajouter un plant de ${plant.name}`}
+                                    >
+                                        <Plus className="size-4" />
+                                    </button>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-2">
-                                <button
-                                    type="button"
-                                    onClick={() => updateCount(plant.id, -1)}
-                                    disabled={count === 0}
-                                    className={cn(
-                                        "flex size-8 items-center justify-center rounded-full border border-gray-200 transition-colors",
-                                        "focus-visible:outline-outline outline-2 outline-transparent",
-                                        count === 0
-                                            ? "cursor-not-allowed text-gray-300"
-                                            : "cursor-pointer text-gray-700 hover:bg-gray-50 active:bg-gray-100",
-                                    )}
-                                    aria-label={`Retirer un plant de ${plant.name}`}
-                                >
-                                    <Minus className="size-4" />
-                                </button>
-                                <span className="w-6 text-center text-sm font-semibold tabular-nums">{count}</span>
-                                <button
-                                    type="button"
-                                    onClick={() => updateCount(plant.id, 1)}
-                                    className={cn(
-                                        "flex size-8 cursor-pointer items-center justify-center rounded-full border border-gray-200 text-gray-700 transition-colors hover:bg-gray-50 active:bg-gray-100",
-                                        "focus-visible:outline-outline outline-2 outline-transparent",
-                                    )}
-                                    aria-label={`Ajouter un plant de ${plant.name}`}
-                                >
-                                    <Plus className="size-4" />
-                                </button>
-                            </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </div>
             </div>
 
             <NavButtons onBack={handleBack} onNext={handleFinish} nextLabel="Finir" />

@@ -20,7 +20,7 @@ export default function ClientWrapper(props: ClientWrapperProps) {
     const [state, setState] = useCookieState<GreenSenseState>(POC_COOKIE_NAME, initialState ?? defaultState);
 
     return (
-        <div className="w-full space-y-6">
+        <div className="flex min-h-0 w-full flex-1 flex-col gap-6">
             <ProgressStepper current={state.step} onStepClick={(step) => setState((s) => ({ ...s, step }))} />
 
             {state.step === 1 && <Step1Surface state={state} setState={setState} />}

@@ -13,7 +13,7 @@ export default async function Page() {
     const initialState = await getCookieState(POC_COOKIE_NAME, greenSenseStateSchema);
 
     return (
-        <Main vertical="start" horizontal="stretch">
+        <Main vertical="start" horizontal="stretch" fill>
             <ClientWrapper initialState={initialState} />
         </Main>
     );
