@@ -1,5 +1,8 @@
 import Main from "@core/Main";
+import { getCookieState } from "@lib/cookie-state-server";
+import { POC_COOKIE_NAME, greenSenseStateSchema } from "@lib/poc-state";
 import type { Metadata } from "next";
+import ClientWrapper from "./_components/client-wrapper";
 
 export const metadata: Metadata = {
     title: "Planificateur",
@@ -7,12 +10,11 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
+    const initialState = await getCookieState(POC_COOKIE_NAME, greenSenseStateSchema);
+
     return (
-        <Main>
-            <div className="space-y-4">
-                <h2 className="text-4xl font-semibold">Planificateur</h2>
-                <p className="text-lg text-gray-600">À construire prochainement…</p>
-            </div>
+        <Main vertical="start" horizontal="stretch">
+            <ClientWrapper initialState={initialState} />
         </Main>
     );
 }
