@@ -1,0 +1,24 @@
+services:
+    nextjs:
+        container_name: nextjs-${ENV_LABEL}
+        build:
+            context: ./
+            dockerfile: docker/Dockerfile.nextjs
+            target: runner
+            args:
+                NODE_ENV: ${NODE_ENV}
+                NEXTJS_STANDALONE: ${NEXTJS_STANDALONE}
+                NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
+        restart: unless-stopped
+        networks:
+            - dokploy-network
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.nextjs-${ENV_LABEL}.rule=Host(`${VPS_NEXTJS_DOMAIN}`)
+            - traefik.http.routers.nextjs-${ENV_LABEL}.entrypoints=websecure
+            - traefik.http.routers.nextjs-${ENV_LABEL}.tls.certResolver=letsencrypt
+            - traefik.http.services.nextjs-${ENV_LABEL}.loadbalancer.server.port=3000
+
+networks:
+    dokploy-network:
+        external: true

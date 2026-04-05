@@ -1,0 +1,57 @@
+####################
+#       Base       #
+####################
+FROM oven/bun:1 AS base
+
+WORKDIR /app
+
+# Import ENV variables for build time
+ARG NODE_ENV
+ARG NEXTJS_STANDALONE
+ARG NEXT_PUBLIC_BASE_URL
+
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
+
+########################
+#   Dev Dependencies   #
+########################
+FROM base AS dev-deps
+
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
+
+####################
+#     Builder      #
+####################
+FROM dev-deps AS builder
+
+COPY . .
+
+# Important to set "NEXT_PUBLIC_*" ENVs before nextjs build
+ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
+ENV NEXTJS_STANDALONE=$NEXTJS_STANDALONE
+
+RUN bun run build
+
+####################
+#     Runner       #
+####################
+FROM base AS runner
+
+# Create non-root user BEFORE copying files with --chown
+RUN groupadd --gid 1001 nodejs
+RUN useradd --uid 1001 --gid nodejs nextjs
+
+# Standalone build files (includes minimal node_modules)
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+
+# Switch to non-root user
+USER nextjs
+
+# Set prod env
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+CMD ["node", "server.js"]

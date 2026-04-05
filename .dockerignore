@@ -1,0 +1,31 @@
+# git
+.git/
+.gitignore
+.github/
+
+# dependencies
+node_modules/
+.bun
+
+# next.js
+.next/
+
+# misc
+.DS_Store
+*.pem
+
+# submodule (not needed for docker build)
+NextjsDeploy/
+
+# editor
+.vscode/
+.cursor/
+.idea/
+.claude/
+
+# docs & assets
+README.md
+docs/
+
+# husky
+.husky/
