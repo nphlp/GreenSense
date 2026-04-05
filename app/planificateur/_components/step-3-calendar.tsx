@@ -2,10 +2,11 @@
 
 import { Panel, Root, Trigger } from "@atoms/collapsible";
 import { Icon } from "@iconify/react";
+import cn from "@lib/cn";
 import { getPlantsByIds, mergePlantIds } from "@lib/plants/helpers";
 import type { GreenSenseState } from "@lib/poc-state";
 import { ChevronRight } from "lucide-react";
-import type { Dispatch, SetStateAction } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import NavButtons from "./nav-buttons";
 import { PhaseBar } from "./plant-timeline";
 
@@ -29,6 +30,8 @@ export default function Step3Calendar(props: Step3CalendarProps) {
     const allCompanionIds = Object.values(state.companionChoices).flat();
     const allPlantIds = mergePlantIds(state.selectedPlants, allCompanionIds);
     const plants = getPlantsByIds(allPlantIds);
+
+    const [openPlantId, setOpenPlantId] = useState<string | null>(null);
 
     const handleBack = () => setState((s) => ({ ...s, step: 2 }));
 
@@ -66,7 +69,15 @@ export default function Step3Calendar(props: Step3CalendarProps) {
 
                 {/* Plant rows */}
                 {plants.map((plant) => (
-                    <Root key={plant.id}>
+                    <Root
+                        key={plant.id}
+                        open={openPlantId === plant.id}
+                        onOpenChange={(open) => setOpenPlantId(open ? plant.id : null)}
+                        className={cn(
+                            "rounded-md transition-[margin,background-color]",
+                            openPlantId === plant.id && "bg-gray-50/70",
+                        )}
+                    >
                         <Trigger
                             noStyle
                             className="group w-full cursor-pointer rounded-md px-3 py-1.5 text-left hover:bg-gray-50"
@@ -81,7 +92,7 @@ export default function Step3Calendar(props: Step3CalendarProps) {
                             </div>
                         </Trigger>
                         <Panel>
-                            <div className="mt-1 rounded-md bg-gray-50 px-3 py-3">
+                            <div className="px-3 pt-1 pb-3">
                                 {/* Name visible on mobile only (in trigger only on md+) */}
                                 <span className="text-sm font-semibold md:hidden">{plant.name}</span>
                                 {plant.description && (

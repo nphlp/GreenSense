@@ -29,7 +29,7 @@ export default function PlantChip(props: PlantChipProps) {
                 // Border + transitions
                 "border transition-colors",
                 checked
-                    ? "border-gray-400 bg-gray-100"
+                    ? "border-gray-400 bg-gray-50/70"
                     : "border-gray-200 hover:border-gray-300 active:border-gray-400",
                 // Outline
                 "has-focus-visible:outline-outline outline-2 outline-transparent",
