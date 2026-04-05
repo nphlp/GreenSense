@@ -2,7 +2,8 @@
 
 import { HEADER_HEIGHT } from "@core/config";
 import cn from "@lib/cn";
-import Link from "next/link";
+import { resetCookieState } from "@lib/cookie-state-client";
+import { POC_COOKIE_NAME, defaultState } from "@lib/poc-state";
 import { useSyncExternalStore } from "react";
 
 const scrollStore = (() => {
@@ -22,6 +23,10 @@ export default function Header() {
         scrollStore.getServerSnapshot,
     );
 
+    const handleReset = () => {
+        resetCookieState(POC_COOKIE_NAME, defaultState);
+    };
+
     return (
         <header
             style={{ height: `${HEADER_HEIGHT}rem` }}
@@ -34,10 +39,9 @@ export default function Header() {
                 scrolled ? "border-gray-200" : "border-transparent",
             )}
         >
-            {/* TODO: reset POC progression on click */}
-            <Link href="/" className="text-2xl font-bold">
+            <button type="button" onClick={handleReset} className="cursor-pointer text-2xl font-bold">
                 GreenSense
-            </Link>
+            </button>
         </header>
     );
 }
