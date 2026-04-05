@@ -5,6 +5,7 @@ import cn from "@lib/cn";
 import { resetCookieState } from "@lib/cookie-state-client";
 import { POC_COOKIE_NAME, defaultState } from "@lib/poc-state";
 import Image from "next/image";
+import Link from "next/link";
 import { useSyncExternalStore } from "react";
 
 const scrollStore = (() => {
@@ -40,10 +41,10 @@ export default function Header() {
                 scrolled ? "border-gray-200" : "border-transparent",
             )}
         >
-            <button type="button" onClick={handleReset} className="flex cursor-pointer items-center gap-2">
+            <Link href="/" onClick={handleReset} className="flex cursor-pointer items-center gap-2">
                 <Image src="/logo.webp" alt="" width={32} height={32} className="size-8" />
                 <span className="text-2xl font-bold">GreenSense</span>
-            </button>
+            </Link>
         </header>
     );
 }
