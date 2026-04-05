@@ -16,6 +16,8 @@ const eslintConfig = defineConfig([
         ".next/**",
         ".github/**",
         "NextjsDeploy/**",
+        "env/**",
+        "scripts/**",
         "prettier.config.mjs",
         "postcss.config.mjs",
         "commitlint.config.ts",

@@ -1,6 +1,8 @@
 services:
     nextjs:
         container_name: nextjs-${ENV_LABEL}
+        env_file:
+            - ./.env
         build:
             context: ./
             dockerfile: docker/Dockerfile.nextjs
@@ -10,6 +12,12 @@ services:
                 NEXTJS_STANDALONE: ${NEXTJS_STANDALONE}
                 NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
         restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 40s
         networks:
             - dokploy-network
         labels:

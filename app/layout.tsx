@@ -3,9 +3,11 @@ import Breakpoints from "@comps/breakpoints";
 import Header from "@core/Header";
 import { DEBUG_LAYOUT } from "@core/config";
 import cn from "@lib/cn";
+import { IS_UMAMI_DEFINED, UMAMI_WEBSITE_ID } from "@lib/env";
 import "@public/globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ReactNode } from "react";
 
@@ -53,6 +55,14 @@ export default async function Layout(props: LayoutProps) {
                         <Breakpoints mode="onResize" />
                     </NuqsAdapter>
                 </ToastProvider>
+                {IS_UMAMI_DEFINED && (
+                    <Script
+                        src="/api/umami/script.js"
+                        data-host-url="/api/umami"
+                        data-website-id={UMAMI_WEBSITE_ID}
+                        defer
+                    />
+                )}
             </body>
         </html>
     );

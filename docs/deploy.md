@@ -7,15 +7,26 @@ Minimal deployment guide for GreenSense POC. Assumes Dokploy, Traefik and a doma
 - Dokploy instance running on VPS
 - Domain name with DNS pointing to VPS public IP
 - Traefik with DNS challenge enabled on Dokploy
+- (Optional) Umami instance running on the same `dokploy-network`
 
 ---
 
-## 1. Create Project & Environment
+## 1. Generate local env files
+
+```bash
+make setup-env
+```
+
+1. First run → copies `env/env.config.example.mjs` to `env/env.config.mjs`
+2. Edit `env/env.config.mjs` with your real values (domain, Umami token, etc.)
+3. Second run → generates `.env` (dev) + `env/.env.production`
+
+## 2. Create Project & Environment on Dokploy
 
 1. **Dokploy** > Projects > **Create Project** (e.g., `GreenSense`)
 2. Create an environment (e.g., `production`)
 
-## 2. Create Compose Service
+## 3. Create Compose Service
 
 In the environment:
 
@@ -28,21 +39,11 @@ In the environment:
     - Compose file path: `./compose.dokploy.yml`
     - Click **Save**
 
-## 3. Environment Variables
+## 4. Environment Variables
 
-In **Dokploy** > your compose service > **Environment** tab, paste:
+Copy the content of your local `env/.env.production` into **Dokploy** > your compose service > **Environment** tab. Click **Save**.
 
-```bash
-ENV_LABEL=production
-NODE_ENV=production
-NEXTJS_STANDALONE=true
-NEXT_PUBLIC_BASE_URL=https://your-domain.com
-VPS_NEXTJS_DOMAIN=your-domain.com
-```
-
-Replace `your-domain.com` with your actual domain. Click **Save**.
-
-## 4. DNS Record
+## 5. DNS Record
 
 Add an A record pointing to your VPS public IP:
 
@@ -50,18 +51,21 @@ Add an A record pointing to your VPS public IP:
 | ---- | ----------------- | ------------- |
 | A    | `your-domain.com` | VPS public IP |
 
-## 5. Deploy
+## 6. Deploy
 
 - Click **Deploy** in Dokploy, or push to `main` if auto-deploy is enabled
 - The compose builds the Next.js standalone image and starts the container
 - Traefik automatically provisions the SSL certificate
+- Healthcheck probes `/api/health` every 30s
 
-## 6. Verify
+## 7. Verify
 
 - [ ] App accessible at `https://your-domain.com`
+- [ ] `/api/health` returns `{"status":"ok",...}`
 - [ ] Landing page shows GreenSense hero
 - [ ] `/planificateur` flow works through all 5 steps
 - [ ] `/mon-jardin` displays the summary
+- [ ] Umami dashboard shows incoming page views (if configured)
 
 ---
 
@@ -70,11 +74,12 @@ Add an A record pointing to your VPS public IP:
 ```
 [Browser] → Traefik (TLS) → Next.js container (port 3000)
                             │
-                            └─ Standalone build (no DB, no backend)
-                               Cookie state (client-only)
+                            ├─ /api/health        (liveness probe)
+                            ├─ /api/umami/*       (proxy to Umami internal service)
+                            └─ App pages (cookie state, no DB)
 ```
 
-No database, no backend API, no migrations — just a static/partially-prerendered Next.js app.
+No database, no backend API, no migrations — a static/partially-prerendered Next.js app with optional Umami analytics.
 
 ---
 
