@@ -7,7 +7,7 @@ import type { GreenSenseState } from "@lib/poc-state";
 import { ChevronRight } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
 import NavButtons from "./nav-buttons";
-import PlantTimeline, { PhaseBar } from "./plant-timeline";
+import { PhaseBar } from "./plant-timeline";
 
 type Step3CalendarProps = {
     state: GreenSenseState;
@@ -71,23 +71,55 @@ export default function Step3Calendar(props: Step3CalendarProps) {
                             noStyle
                             className="group w-full cursor-pointer rounded-md px-3 py-1.5 text-left hover:bg-gray-50"
                         >
-                            <div className="grid grid-cols-[32px_1fr_auto] items-center gap-2 md:grid-cols-[140px_1fr_auto] md:gap-3">
+                            <div className="grid grid-cols-[32px_1fr_auto] items-stretch gap-2 md:grid-cols-[140px_1fr_auto] md:gap-3">
                                 <div className="flex items-center gap-2">
                                     <Icon icon={plant.icon} className="size-6 shrink-0" />
                                     <span className="hidden truncate text-sm font-medium md:inline">{plant.name}</span>
                                 </div>
-                                <PhaseBar phase={plant.phases.harvest} colorClass="bg-orange-500" height="h-2.5" />
-                                <ChevronRight className="size-4 text-gray-400 transition-transform group-data-panel-open:rotate-90" />
+                                <PhaseBar phase={plant.phases.harvest} colorClass="bg-orange-500" />
+                                <ChevronRight className="my-auto size-4 text-gray-400 transition-transform group-data-panel-open:rotate-90" />
                             </div>
                         </Trigger>
                         <Panel>
-                            <div className="mt-1 space-y-2 rounded-md bg-gray-50 px-3 py-3">
+                            <div className="mt-1 rounded-md bg-gray-50 px-3 py-3">
                                 {/* Name visible on mobile only (in trigger only on md+) */}
                                 <span className="text-sm font-semibold md:hidden">{plant.name}</span>
-                                {plant.description && <p className="text-xs text-gray-500">{plant.description}</p>}
-                                <div className="grid grid-cols-[32px_1fr] gap-2 md:grid-cols-[140px_1fr] md:gap-3">
+                                {plant.description && (
+                                    <p className="mt-1 mb-2 text-xs text-gray-500">{plant.description}</p>
+                                )}
+                                <div className="grid grid-cols-[32px_1fr_16px] items-stretch gap-2 md:grid-cols-[140px_1fr_16px] md:gap-3">
+                                    {plant.phases.sowing && (
+                                        <>
+                                            <div className="flex items-center text-xs text-gray-600">
+                                                <span className="hidden md:inline">Semis</span>
+                                            </div>
+                                            <PhaseBar phase={plant.phases.sowing} colorClass="bg-green-300" />
+                                            <div />
+                                        </>
+                                    )}
+                                    {plant.phases.planting && (
+                                        <>
+                                            <div className="flex items-center text-xs text-gray-600">
+                                                <span className="hidden md:inline">Plantation</span>
+                                            </div>
+                                            <PhaseBar phase={plant.phases.planting} colorClass="bg-green-600" />
+                                            <div />
+                                        </>
+                                    )}
+                                    {plant.phases.flowering && (
+                                        <>
+                                            <div className="flex items-center text-xs text-gray-600">
+                                                <span className="hidden md:inline">Floraison</span>
+                                            </div>
+                                            <PhaseBar phase={plant.phases.flowering} colorClass="bg-pink-400" />
+                                            <div />
+                                        </>
+                                    )}
+                                    <div className="flex items-center text-xs text-gray-600">
+                                        <span className="hidden md:inline">Récolte</span>
+                                    </div>
+                                    <PhaseBar phase={plant.phases.harvest} colorClass="bg-orange-500" />
                                     <div />
-                                    <PlantTimeline plant={plant} />
                                 </div>
                             </div>
                         </Panel>
