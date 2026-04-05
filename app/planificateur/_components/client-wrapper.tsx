@@ -19,7 +19,7 @@ export default function ClientWrapper(props: ClientWrapperProps) {
 
     return (
         <div className="w-full max-w-2xl space-y-6">
-            <ProgressStepper current={state.step} />
+            <ProgressStepper current={state.step} onStepClick={(step) => setState((s) => ({ ...s, step }))} />
 
             {state.step === 1 && <Step1Plants state={state} setState={setState} />}
             {state.step === 2 && <Step2Companions state={state} setState={setState} />}
