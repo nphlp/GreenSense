@@ -1,7 +1,14 @@
 "use client";
 
 import { Icon } from "@iconify/react";
-import { getCompanionReason, getCompanionsFor, getPlant } from "@lib/plants/helpers";
+import cn from "@lib/cn";
+import {
+    getCompanionReason,
+    getCompanionsFor,
+    getPlant,
+    getRecommendedPlantCount,
+    mergePlantIds,
+} from "@lib/plants/helpers";
 import type { GreenSenseState } from "@lib/poc-state";
 import type { Dispatch, SetStateAction } from "react";
 import NavButtons from "./nav-buttons";
@@ -31,6 +38,11 @@ export default function Step3Companions(props: Step3CompanionsProps) {
     const handleBack = () => setState((s) => ({ ...s, step: 2 }));
     const handleNext = () => setState((s) => ({ ...s, step: 4 }));
 
+    const allCompanionIds = Object.values(state.companionChoices).flat();
+    const totalCount = mergePlantIds(state.selectedPlants, allCompanionIds).length;
+    const recommendation = state.surface !== null ? getRecommendedPlantCount(state.surface) : null;
+    const isInRange = recommendation !== null && totalCount >= recommendation.min && totalCount <= recommendation.max;
+
     return (
         <div className="flex min-h-0 flex-1 flex-col gap-6">
             <div className="flex-1 space-y-6 overflow-y-auto">
@@ -40,6 +52,18 @@ export default function Step3Companions(props: Step3CompanionsProps) {
                         Ces associations protègent vos cultures et optimisent la croissance.
                     </p>
                 </div>
+                {recommendation && state.surface !== null && (
+                    <div className="text-xs text-gray-600">
+                        Pour {state.surface} m², nous recommandons{" "}
+                        <span className="font-medium text-gray-900">
+                            {recommendation.min}-{recommendation.max} plantes
+                        </span>
+                        {" · "}
+                        <span className={cn("font-medium", isInRange ? "text-green-600" : "text-orange-500")}>
+                            {totalCount} plante{totalCount > 1 ? "s" : ""} au total
+                        </span>
+                    </div>
+                )}
 
                 <div className="space-y-8">
                     {state.selectedPlants.map((plantId) => {
