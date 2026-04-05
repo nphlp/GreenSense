@@ -23,6 +23,8 @@ export const PLANTS: Plant[] = [
         },
         companions: ["basilic", "carotte", "ail", "oignon", "aubergine", "poivron"],
         description: "Reine du potager, gourmande en soleil et en eau.",
+        spacePerPlant: 1,
+        yieldPerPlant: 2,
     },
     {
         id: "poivron",
@@ -37,6 +39,8 @@ export const PLANTS: Plant[] = [
         },
         companions: ["basilic", "tomate", "oignon", "aubergine", "carotte"],
         description: "Solanacée qui demande beaucoup de chaleur.",
+        spacePerPlant: 0.5,
+        yieldPerPlant: 1,
     },
     {
         id: "courgette",
@@ -51,6 +55,8 @@ export const PLANTS: Plant[] = [
         },
         companions: ["basilic", "mais", "salade"],
         description: "Production abondante, à récolter jeune pour plus de tendreté.",
+        spacePerPlant: 1.5,
+        yieldPerPlant: 4,
     },
     {
         id: "aubergine",
@@ -65,6 +71,8 @@ export const PLANTS: Plant[] = [
         },
         companions: ["basilic", "tomate", "poivron"],
         description: "Solanacée frileuse, à installer après les dernières gelées.",
+        spacePerPlant: 0.8,
+        yieldPerPlant: 1.5,
     },
     {
         id: "salade",
@@ -77,6 +85,8 @@ export const PLANTS: Plant[] = [
         },
         companions: ["carotte", "ail", "oignon", "fraise", "brocoli", "courgette"],
         description: "Semez en échelonné pour en avoir toute l'année.",
+        spacePerPlant: 0.1,
+        yieldPerPlant: 0.3,
     },
     {
         id: "brocoli",
@@ -90,6 +100,8 @@ export const PLANTS: Plant[] = [
         },
         companions: ["salade", "oignon", "ail", "pomme-de-terre"],
         description: "Crucifère riche en vitamines, apprécie les sols frais.",
+        spacePerPlant: 0.5,
+        yieldPerPlant: 0.8,
     },
     {
         id: "carotte",
@@ -102,6 +114,8 @@ export const PLANTS: Plant[] = [
         },
         companions: ["tomate", "salade", "oignon", "ail", "poivron"],
         description: "Préfère un sol meuble et sans cailloux pour de belles racines.",
+        spacePerPlant: 0.02,
+        yieldPerPlant: 0.1,
     },
     {
         id: "pomme-de-terre",
@@ -115,6 +129,8 @@ export const PLANTS: Plant[] = [
         },
         companions: ["mais", "brocoli"],
         description: "À butter régulièrement pour favoriser la formation des tubercules.",
+        spacePerPlant: 0.15,
+        yieldPerPlant: 1,
     },
     {
         id: "ail",
@@ -127,6 +143,8 @@ export const PLANTS: Plant[] = [
         },
         companions: ["tomate", "fraise", "carotte", "salade", "brocoli", "pomme", "poire"],
         description: "Plantation possible en automne (ail d'hiver) ou fin d'hiver.",
+        spacePerPlant: 0.02,
+        yieldPerPlant: 0.05,
     },
     {
         id: "oignon",
@@ -140,6 +158,8 @@ export const PLANTS: Plant[] = [
         },
         companions: ["carotte", "tomate", "salade", "fraise", "brocoli", "poivron", "pomme", "poire"],
         description: "Repousse de nombreux ravageurs, à marier avec la carotte.",
+        spacePerPlant: 0.04,
+        yieldPerPlant: 0.1,
     },
     {
         id: "basilic",
@@ -153,6 +173,8 @@ export const PLANTS: Plant[] = [
         },
         companions: ["tomate", "poivron", "aubergine", "courgette"],
         description: "Protège les solanacées des parasites, à pincer pour qu'il se ramifie.",
+        spacePerPlant: 0.1,
+        yieldPerPlant: 0.2,
     },
     {
         id: "fraise",
@@ -166,6 +188,8 @@ export const PLANTS: Plant[] = [
         },
         companions: ["ail", "oignon", "salade"],
         description: "Plantation à l'automne pour une récolte dès le printemps suivant.",
+        spacePerPlant: 0.1,
+        yieldPerPlant: 0.3,
     },
     {
         id: "pomme",
@@ -179,6 +203,8 @@ export const PLANTS: Plant[] = [
         },
         companions: ["ail", "oignon"],
         description: "Arbre fruitier à planter en automne ou fin d'hiver.",
+        spacePerPlant: 3,
+        yieldPerPlant: 15,
     },
     {
         id: "poire",
@@ -192,6 +218,8 @@ export const PLANTS: Plant[] = [
         },
         companions: ["ail", "oignon"],
         description: "Apprécie un emplacement chaud et abrité du vent.",
+        spacePerPlant: 3,
+        yieldPerPlant: 12,
     },
     {
         id: "mais",
@@ -205,5 +233,7 @@ export const PLANTS: Plant[] = [
         },
         companions: ["courgette", "pomme-de-terre"],
         description: "Composant classique du trio « trois sœurs » avec courgette et haricot.",
+        spacePerPlant: 0.15,
+        yieldPerPlant: 0.3,
     },
 ];

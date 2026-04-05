@@ -80,3 +80,42 @@ export function getHarvestSeasonLabel(plant: Plant): string {
     if (seasons.length === 4) return "Toute l’année";
     return `${seasons[0]}-${seasons[seasons.length - 1]}`;
 }
+
+/**
+ * Total m² used given a mapping of plantId → count.
+ */
+export function getUsedSurface(plantCounts: Record<string, number>): number {
+    let total = 0;
+    for (const [id, count] of Object.entries(plantCounts)) {
+        const plant = getPlant(id);
+        if (plant) total += plant.spacePerPlant * count;
+    }
+    return total;
+}
+
+/**
+ * Total kg/year yield given a mapping of plantId → count.
+ */
+export function getTotalYield(plantCounts: Record<string, number>): number {
+    let total = 0;
+    for (const [id, count] of Object.entries(plantCounts)) {
+        const plant = getPlant(id);
+        if (plant) total += plant.yieldPerPlant * count;
+    }
+    return total;
+}
+
+/**
+ * Recommended number of plants for a given surface (in m²).
+ * Simple tiers:
+ *   ≤ 30 m²   → 5-6
+ *   31-80 m²  → 6-8
+ *   81-150 m² → 8-10
+ *   > 150 m²  → 10-12
+ */
+export function getRecommendedPlantCount(surface: number): { min: number; max: number } {
+    if (surface <= 30) return { min: 5, max: 6 };
+    if (surface <= 80) return { min: 6, max: 8 };
+    if (surface <= 150) return { min: 8, max: 10 };
+    return { min: 10, max: 12 };
+}

@@ -29,4 +29,6 @@ export type Plant = {
     };
     companions: string[]; // IDs of companion plants
     description?: string;
+    spacePerPlant: number; // m² occupied by one plant (e.g. 1 for tomate, 0.02 for carotte)
+    yieldPerPlant: number; // kg/year harvested per plant (e.g. 2 for tomate, 0.1 for carotte)
 };

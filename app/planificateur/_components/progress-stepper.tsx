@@ -2,7 +2,7 @@
 
 import cn from "@lib/cn";
 
-type Step = 1 | 2 | 3;
+type Step = 1 | 2 | 3 | 4 | 5;
 
 type ProgressStepperProps = {
     current: Step;
