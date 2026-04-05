@@ -94,7 +94,7 @@ Skipped (not relevant for GreenSense POC): `9-orpc.md` (no API), `11-theme.md` (
 ### Atoms (Base-UI components)
 
 - **Import pattern**: Always import atoms via `index.ts` — default export for the composable component, named exports for sub-components: `import Popover, { Arrow, Popup, Portal, Trigger } from "@atoms/popover"`.
-- **Composing new components**: When building custom components that need primitives (checkbox, switch, popover, etc.), reuse the styled `Root`/`Indicator`/... exports from `@atoms/<component>/atoms` — do NOT import from `@base-ui/react/*` directly. The atom wrappers include flex centering, theme tokens, and focus styles required for visual consistency. Example: for a checkbox-like custom chip, import `{ Root, Indicator } from "@atoms/checkbox/atoms"` rather than `{ Checkbox } from "@base-ui/react/checkbox"`.
+- **Composing new components**: When building custom components that need primitives (checkbox, switch, popover, collapsible, etc.), reuse the styled `Root`/`Indicator`/`Trigger`/`Panel`/... sub-components **via the atom's `index.ts`** (not from `@atoms/<component>/atoms` directly, and never from `@base-ui/react/*`). The atom wrappers include flex centering, theme tokens, and focus styles required for visual consistency. Example: `import { Root, Indicator } from "@atoms/checkbox"` or `import Collapsible, { Root, Trigger, Panel } from "@atoms/collapsible"`. The default export is the pre-assembled demo component; named exports are the sub-components to compose yourself.
 - **Guide**: Follow `NextjsDeploy/docs/good-practices/10-base-ui.md` (patterns, typing, step-by-step, component inventory) when creating or modifying atoms. Use the `context7` MCP server for up-to-date Base UI documentation.
 
 ### Forms

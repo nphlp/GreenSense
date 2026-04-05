@@ -1,6 +1,6 @@
 "use client";
 
-import { Indicator, Root } from "@atoms/checkbox/atoms";
+import { Indicator, Root } from "@atoms/checkbox";
 import { Icon } from "@iconify/react";
 import cn from "@lib/cn";
 import { Check } from "lucide-react";
