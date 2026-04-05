@@ -8,6 +8,9 @@ node_modules/
 # misc
 .DS_Store
 
+# husky
+.husky/_/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

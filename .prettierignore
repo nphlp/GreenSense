@@ -1,0 +1,5 @@
+.next/
+.github/
+node_modules/
+NextjsDeploy/
+bun.lock
