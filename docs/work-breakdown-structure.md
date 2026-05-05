@@ -67,6 +67,8 @@ Le **tableau de bord** est un espace de visualisation des données du terrain et
 
 Les **notifications intelligentes** sont des alertes personnalisées envoyées à l'utilisateur pour lui rappeler les activités à faire, les observations à faire, ou pour lui fournir des conseils basés sur les données du terrain et des cultures.
 
+À définir...
+
 1. **Notifications du journal de bord**
 2. **Notifications du suivi de croissance**
 3. **Notifications de météo problématique**
@@ -79,6 +81,10 @@ Les **notifications intelligentes** sont des alertes personnalisées envoyées �
 ---
 
 ## Données métier
+
+Les **données métier** sont les informations nécessaires pour le fonctionnement de l'application. Elles sont utilisées lors de la plannification des cultures, pour journal de bord, du suivi de croissance, du tableau de bord et des notifications intelligentes.
+
+À définir...
 
 1. Scrapping de données
 
@@ -94,13 +100,42 @@ Les **notifications intelligentes** sont des alertes personnalisées envoyées �
 
 ## LLM & RAG
 
-## ML & DATA
+Un **LLM connecté à un RAG** sera utilisé pour répondre à des questions spécifiques des utilisateurs, pour rédiger des notifications contextualisées, pour l'interprétation des données de terrain, pour l'ajustement du journal de bord et du tableau de bord, etc.
+
+À définir...
+
+1.
+
+## Machine Learning
+
+Le **Machine Learning** sera utilisé pour prédire des tendances, des rendements, des problèmes potentiels, etc. Il s'appuiera sur les **données de terrain collectées** par les utilisateurs, les capteurs du le terrain, les données externes, et les données métier pour faire des prédictions et des recommandations personnalisées.
+
+À définir...
+
+1.
 
 ## IoT & capteurs
 
+Les **capteurs IoT** sont des dispositifs physiques installés sur le terrain pour collecter des données en temps réel sur les conditions du sol, de l'air, de la lumière, etc. Ces données seront utilisées pour ajuster le journal de bord, le tableau de bord, et les notifications intelligentes.
+
+À définir...
+
+1. Capteurs d'humidité du sol
+2. Capteurs de température
+3. Capteurs de luminosité
+
+Plus tard...
+
+4. Capteurs de CO2 (trop cher)
+5. Capteurs de pH (trop complexe)
+
 ## API Externes
 
-- API météo
-- API de données agricoles
-- API de données de sol
-- API de données de localisation
+Les **API externes** sont des sources de données tierces qui peuvent être intégrées dans notre application pour enrichir les fonctionnalités et les données disponibles pour l'utilisateur.
+
+À définir...
+
+1. API météo
+2. API de données agricoles
+3. API de données de sol
+4. API de données de localisation
