@@ -6,16 +6,10 @@ import type { GreenSenseState } from "@lib/poc-state";
 import { Check } from "lucide-react";
 import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
-import {
-    type ChangeEvent,
-    type Dispatch,
-    type PointerEvent as ReactPointerEvent,
-    type SetStateAction,
-    useEffect,
-    useRef,
-} from "react";
+import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 import NavButtons from "./nav-buttons";
 import ScrollFadeArea from "./scroll-fade-area";
+import TerrainGrid, { type PaintMode } from "./terrain-grid";
 
 type Step1SurfaceProps = {
     state: GreenSenseState;
@@ -24,14 +18,7 @@ type Step1SurfaceProps = {
 
 const PRESETS = [10, 15, 20, 30, 40, 50, 70, 100, 200] as const;
 
-const GRID_COLS = 20;
-const GRID_ROWS = 20;
 const cellKey = (x: number, y: number) => `${x},${y}`;
-
-// Lucide Pencil icon as data URL cursor; white fill + black stroke stays visible on both empty and filled cells.
-// Hotspot (2, 22) aligns with the pencil tip at the bottom-left of the 24x24 viewBox.
-const PENCIL_CURSOR =
-    "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='white' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z'/><path d='m15 5 4 4'/></svg>\") 2 22, crosshair";
 
 export default function Step1Surface(props: Step1SurfaceProps) {
     const { state, setState } = props;
@@ -53,9 +40,10 @@ export default function Step1Surface(props: Step1SurfaceProps) {
     const manualValue = state.surface !== null && !isPreset ? state.surface : "";
 
     const selectedCells = new Set(state.terrainCells);
-    const paintModeRef = useRef<"add" | "remove" | null>(null);
 
-    const applyCell = (x: number, y: number, mode: "add" | "remove") => {
+    const startPaint = (x: number, y: number): PaintMode => (selectedCells.has(cellKey(x, y)) ? "remove" : "add");
+
+    const applyPaint = (x: number, y: number, mode: PaintMode) => {
         const key = cellKey(x, y);
         setState((s) => {
             const has = s.terrainCells.includes(key);
@@ -67,38 +55,6 @@ export default function Step1Surface(props: Step1SurfaceProps) {
             return { ...s, terrainCells: Array.from(next) };
         });
     };
-
-    const handleCellPointerDown = (e: ReactPointerEvent<HTMLButtonElement>, x: number, y: number) => {
-        e.preventDefault();
-        const mode: "add" | "remove" = selectedCells.has(cellKey(x, y)) ? "remove" : "add";
-        paintModeRef.current = mode;
-        applyCell(x, y, mode);
-    };
-
-    const handleGridPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
-        if (!paintModeRef.current) return;
-        const el = document.elementFromPoint(e.clientX, e.clientY);
-        if (!(el instanceof HTMLElement)) return;
-        const cell = el.closest<HTMLElement>("[data-cell]");
-        if (!cell?.dataset.cell) return;
-        const [xStr, yStr] = cell.dataset.cell.split(",");
-        const x = Number(xStr);
-        const y = Number(yStr);
-        if (Number.isNaN(x) || Number.isNaN(y)) return;
-        applyCell(x, y, paintModeRef.current);
-    };
-
-    useEffect(() => {
-        const stop = () => {
-            paintModeRef.current = null;
-        };
-        window.addEventListener("pointerup", stop);
-        window.addEventListener("pointercancel", stop);
-        return () => {
-            window.removeEventListener("pointerup", stop);
-            window.removeEventListener("pointercancel", stop);
-        };
-    }, []);
 
     return (
         <div className="flex min-h-0 flex-1 flex-col gap-6">
@@ -191,43 +147,16 @@ export default function Step1Surface(props: Step1SurfaceProps) {
                     </p>
                 </div>
 
-                <div className="-mx-4 overflow-x-auto px-4">
-                    <div
-                        className="grid w-fit gap-0.5 rounded-md bg-gray-100 p-1"
-                        style={{
-                            gridTemplateColumns: `repeat(${GRID_COLS}, minmax(0, 1fr))`,
-                            cursor: PENCIL_CURSOR,
-                        }}
-                        role="grid"
-                        aria-label="Grille de sélection du terrain"
-                        onPointerMove={handleGridPointerMove}
-                    >
-                        {Array.from({ length: GRID_ROWS }).map((_, y) =>
-                            Array.from({ length: GRID_COLS }).map((_, x) => {
-                                const key = cellKey(x, y);
-                                const selected = selectedCells.has(key);
-                                return (
-                                    <button
-                                        key={key}
-                                        type="button"
-                                        data-cell={key}
-                                        onPointerDown={(e) => handleCellPointerDown(e, x, y)}
-                                        aria-pressed={selected}
-                                        aria-label={`Case colonne ${x + 1}, ligne ${y + 1}`}
-                                        style={{ touchAction: "none", cursor: "inherit" }}
-                                        className={cn(
-                                            "size-7 rounded-sm transition-colors",
-                                            "focus-visible:outline-outline outline-2 outline-transparent",
-                                            selected
-                                                ? "bg-gray-900 hover:bg-gray-800"
-                                                : "bg-white hover:bg-gray-200 active:bg-gray-300",
-                                        )}
-                                    />
-                                );
-                            }),
-                        )}
-                    </div>
-                </div>
+                <TerrainGrid
+                    ariaLabel="Grille de sélection du terrain"
+                    cellClassName={(x, y) =>
+                        selectedCells.has(cellKey(x, y))
+                            ? "bg-gray-900 hover:bg-gray-800"
+                            : "bg-white hover:bg-gray-200 active:bg-gray-300"
+                    }
+                    startPaint={startPaint}
+                    applyPaint={applyPaint}
+                />
 
                 <p className="text-xs text-gray-500">
                     {selectedCells.size} case{selectedCells.size > 1 ? "s" : ""} sélectionnée

@@ -15,12 +15,12 @@ import NavButtons from "./nav-buttons";
 import PlantChip from "./plant-chip";
 import ScrollFadeArea from "./scroll-fade-area";
 
-type Step3CompanionsProps = {
+type Step4CompanionsProps = {
     state: GreenSenseState;
     setState: Dispatch<SetStateAction<GreenSenseState>>;
 };
 
-export default function Step3Companions(props: Step3CompanionsProps) {
+export default function Step4Companions(props: Step4CompanionsProps) {
     const { state, setState } = props;
 
     const toggleCompanion = (plantId: string, companionId: string) => {
@@ -36,8 +36,8 @@ export default function Step3Companions(props: Step3CompanionsProps) {
         });
     };
 
-    const handleBack = () => setState((s) => ({ ...s, step: 2 }));
-    const handleNext = () => setState((s) => ({ ...s, step: 4 }));
+    const handleBack = () => setState((s) => ({ ...s, step: 3 }));
+    const handleNext = () => setState((s) => ({ ...s, step: 5 }));
 
     const allCompanionIds = Object.values(state.companionChoices).flat();
     const totalCount = mergePlantIds(state.selectedPlants, allCompanionIds).length;

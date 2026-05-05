@@ -9,12 +9,12 @@ import NavButtons from "./nav-buttons";
 import PlantChip from "./plant-chip";
 import ScrollFadeArea from "./scroll-fade-area";
 
-type Step2PlantsProps = {
+type Step3PlantsProps = {
     state: GreenSenseState;
     setState: Dispatch<SetStateAction<GreenSenseState>>;
 };
 
-export default function Step2Plants(props: Step2PlantsProps) {
+export default function Step3Plants(props: Step3PlantsProps) {
     const { state, setState } = props;
 
     const togglePlant = (id: string) => {
@@ -26,8 +26,8 @@ export default function Step2Plants(props: Step2PlantsProps) {
         });
     };
 
-    const handleBack = () => setState((s) => ({ ...s, step: 1 }));
-    const handleNext = () => setState((s) => ({ ...s, step: 3 }));
+    const handleBack = () => setState((s) => ({ ...s, step: 2 }));
+    const handleNext = () => setState((s) => ({ ...s, step: 4 }));
 
     const selectedCount = state.selectedPlants.length;
     const recommendation = state.surface !== null ? getRecommendedPlantCount(state.surface) : null;

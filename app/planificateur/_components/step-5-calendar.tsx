@@ -11,7 +11,7 @@ import NavButtons from "./nav-buttons";
 import { PhaseBar } from "./plant-timeline";
 import ScrollFadeArea from "./scroll-fade-area";
 
-type Step4CalendarProps = {
+type Step5CalendarProps = {
     state: GreenSenseState;
     setState: Dispatch<SetStateAction<GreenSenseState>>;
 };
@@ -25,7 +25,7 @@ const LEGEND = [
     { label: "Récolte", color: "bg-orange-500" },
 ] as const;
 
-export default function Step4Calendar(props: Step4CalendarProps) {
+export default function Step5Calendar(props: Step5CalendarProps) {
     const { state, setState } = props;
 
     const allCompanionIds = Object.values(state.companionChoices).flat();
@@ -34,8 +34,8 @@ export default function Step4Calendar(props: Step4CalendarProps) {
 
     const [openPlantId, setOpenPlantId] = useState<string | null>(plants[0]?.id ?? null);
 
-    const handleBack = () => setState((s) => ({ ...s, step: 3 }));
-    const handleNext = () => setState((s) => ({ ...s, step: 5 }));
+    const handleBack = () => setState((s) => ({ ...s, step: 4 }));
+    const handleNext = () => setState((s) => ({ ...s, step: 6 }));
 
     return (
         <div className="flex min-h-0 flex-1 flex-col gap-6">

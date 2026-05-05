@@ -10,7 +10,7 @@ import type { Dispatch, SetStateAction } from "react";
 import NavButtons from "./nav-buttons";
 import ScrollFadeArea from "./scroll-fade-area";
 
-type Step5CountsProps = {
+type Step6CountsProps = {
     state: GreenSenseState;
     setState: Dispatch<SetStateAction<GreenSenseState>>;
 };
@@ -19,7 +19,7 @@ function formatNumber(n: number): string {
     return n % 1 === 0 ? String(n) : n.toFixed(2).replace(/\.?0+$/, "");
 }
 
-export default function Step5Counts(props: Step5CountsProps) {
+export default function Step6Counts(props: Step6CountsProps) {
     const { state, setState } = props;
     const router = useRouter();
 
@@ -49,7 +49,7 @@ export default function Step5Counts(props: Step5CountsProps) {
 
     const barColor = percent <= 80 ? "bg-green-500" : percent <= 100 ? "bg-orange-500" : "bg-red-500";
 
-    const handleBack = () => setState((s) => ({ ...s, step: 4 }));
+    const handleBack = () => setState((s) => ({ ...s, step: 5 }));
     const handleFinish = () => router.push("/mon-jardin");
 
     return (

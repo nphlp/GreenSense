@@ -7,10 +7,11 @@ import { type GreenSenseState, POC_COOKIE_NAME, defaultState } from "@lib/poc-st
 import { AnimatePresence, motion } from "motion/react";
 import ProgressStepper from "./progress-stepper";
 import Step1Surface from "./step-1-surface";
-import Step2Plants from "./step-2-plants";
-import Step3Companions from "./step-3-companions";
-import Step4Calendar from "./step-4-calendar";
-import Step5Counts from "./step-5-counts";
+import Step2Characteristics from "./step-2-characteristics";
+import Step3Plants from "./step-3-plants";
+import Step4Companions from "./step-4-companions";
+import Step5Calendar from "./step-5-calendar";
+import Step6Counts from "./step-6-counts";
 
 type ClientWrapperProps = {
     initialState: GreenSenseState | undefined;
@@ -34,10 +35,11 @@ export default function ClientWrapper(props: ClientWrapperProps) {
                     className="flex min-h-0 flex-1 flex-col"
                 >
                     {state.step === 1 && <Step1Surface state={state} setState={setState} />}
-                    {state.step === 2 && <Step2Plants state={state} setState={setState} />}
-                    {state.step === 3 && <Step3Companions state={state} setState={setState} />}
-                    {state.step === 4 && <Step4Calendar state={state} setState={setState} />}
-                    {state.step === 5 && <Step5Counts state={state} setState={setState} />}
+                    {state.step === 2 && <Step2Characteristics state={state} setState={setState} />}
+                    {state.step === 3 && <Step3Plants state={state} setState={setState} />}
+                    {state.step === 4 && <Step4Companions state={state} setState={setState} />}
+                    {state.step === 5 && <Step5Calendar state={state} setState={setState} />}
+                    {state.step === 6 && <Step6Counts state={state} setState={setState} />}
                 </motion.div>
             </AnimatePresence>
         </div>
